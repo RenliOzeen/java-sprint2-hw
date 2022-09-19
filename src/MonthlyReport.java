@@ -5,35 +5,23 @@ import java.time.Month;
 import java.util.HashMap;
 
 public class MonthlyReport {
-    HashMap<String, HashMap<Integer, Double>> expenseReport;
-    HashMap<String, HashMap<Integer, Double>> incomeReport;
+   final HashMap<String, HashMap<Integer, Double>> expenseReport;
+   final HashMap<String, HashMap<Integer, Double>> incomeReport;
 
 
-    MonthlyReport(String path) {
+    MonthlyReport() {
         expenseReport = new HashMap<>();
         incomeReport = new HashMap<>();
-        HashMap<Integer, Double> expense = new HashMap<>();
-        HashMap<Integer, Double> income = new HashMap<>();
 
-        String file = readFileContentsOrNull(path);
-        String[] lines = file.split("\n");
-        for (int i = 1; i < lines.length; i++) {
-            String[] lineContents = lines[i].split(",");
-            if (Boolean.valueOf(lineContents[1]) == true) {
-                expense = new HashMap<>();
-                expense.put(Integer.valueOf(lineContents[2]),
-                        Double.valueOf(lineContents[3]));
-                expenseReport.put(lineContents[0], expense);
 
-            } else {
-                income = new HashMap<>();
-                income.put(Integer.valueOf(lineContents[2]),
-                        Double.valueOf(lineContents[3]));
-                incomeReport.put(lineContents[0], income);
-            }
-        }
     }
 
+    /**Метод для считывания строки из файла, такой же используется в классе YearlyReport
+     *
+     * @param path
+     * @return
+     */  //не совсем разобрался, но судя по всему javadoc отличается от обычных комментов
+         //цветом и возможностью добавлять дополнительные обозначения(имя разработчика/версию/параметры метода)
     public String readFileContentsOrNull(String path) {
         try {
             return Files.readString(Path.of(path));
@@ -45,6 +33,12 @@ public class MonthlyReport {
         }
     }
 
+    /** Метод, проводящий сверку месячных отчетов с годовым
+     *
+     * @param reportPerMonth
+     * @param reportPerYear
+     * @param i
+     */
     public void collation(MonthlyReport reportPerMonth,
                           YearlyReport reportPerYear, int i) {
         double monthExpenseSum = 0;
@@ -72,34 +66,64 @@ public class MonthlyReport {
         }
     }
 
+    /** Метод, отображающий краткую статистику по месячным отчетам
+     *
+     * @param reportPerMonth
+     * @param i
+     */
     public void infoOfReports(MonthlyReport reportPerMonth, int i) {
-        System.out.println(Month.of(i));
-        double itemSum = 0;
-        String key = null;
-        for (String name : reportPerMonth.incomeReport.keySet()) {
-            HashMap<Integer, Double> incomes = reportPerMonth.incomeReport.get(name);
-            for (Integer count : incomes.keySet()) {
-                if (count * incomes.get(count) > itemSum) {
-                    itemSum = count * incomes.get(count);
-                    key = name;
+        if (!reportPerMonth.incomeReport.isEmpty()) {
+            System.out.println(Month.of(i));
+            double itemSum = 0;
+            String key = null;
+            for (String name : reportPerMonth.incomeReport.keySet()) {
+                HashMap<Integer, Double> incomes = reportPerMonth.incomeReport.get(name);
+                for (Integer count : incomes.keySet()) {
+                    if (count * incomes.get(count) > itemSum) {
+                        itemSum = count * incomes.get(count);
+                        key = name;
+                    }
                 }
             }
-        }
-        System.out.println("Самый прибыльный товар - " + key + " на сумму " + itemSum);
-        key = null;
-        itemSum = 0;
+            System.out.println("Самый прибыльный товар - " + key + " на сумму " + itemSum);
+            key = null;
+            itemSum = 0;
 
-        for (String name : reportPerMonth.expenseReport.keySet()) {
-            HashMap<Integer, Double> expenses = reportPerMonth.expenseReport.get(name);
-            for (Integer count : expenses.keySet()) {
-                if (count * expenses.get(count) > itemSum) {
-                    itemSum = count * expenses.get(count);
-                    key = name;
+            for (String name : reportPerMonth.expenseReport.keySet()) {
+                HashMap<Integer, Double> expenses = reportPerMonth.expenseReport.get(name);
+                for (Integer count : expenses.keySet()) {
+                    if (count * expenses.get(count) > itemSum) {
+                        itemSum = count * expenses.get(count);
+                        key = name;
+                    }
+
                 }
+            }
+            System.out.println("Самая большая трата - " + key + " на сумму " + itemSum);
+        }
+    }
 
+    /** Метод для сохранения считанных в строку файлов отчетов в мапы,аналогичный в классе YearlyReport
+     *
+     * @param file строка, полученная из метода readFileContentsOrNull
+     */
+    public void saveData(String file) {
+        String[] lines = file.split("\n");
+        for (int i = 1; i < lines.length; i++) {
+            String[] lineContents = lines[i].split(",");
+            if (Boolean.parseBoolean(lineContents[1])) {
+                HashMap<Integer, Double> expense = new HashMap<>();
+                expense.put(Integer.valueOf(lineContents[2]),
+                        Double.valueOf(lineContents[3]));
+                expenseReport.put(lineContents[0], expense);
+
+            } else {
+                HashMap<Integer, Double> income = new HashMap<>();
+                income.put(Integer.valueOf(lineContents[2]),
+                        Double.valueOf(lineContents[3]));
+                incomeReport.put(lineContents[0], income);
             }
         }
-        System.out.println("Самая большая трата - " + key + " на сумму " + itemSum);
     }
 }
 

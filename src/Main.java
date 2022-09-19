@@ -1,12 +1,12 @@
-import java.time.Month;
+
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        MonthlyReport[] monthlyReports = new MonthlyReport[3];
-        YearlyReport yearlyReport = new YearlyReport();
+        ReportService reportService = new ReportService();
+
 
         System.out.println("Введите календарный год в формате (YYYY)");
         String nameOfYear = scanner.nextLine();
@@ -15,53 +15,24 @@ public class Main {
         while (true) {
             if (command == 1) {
                 try {
-                    for (int i = 0; i < monthlyReports.length; i++) {
-                        String numberMonth = String.format("%02d", (i + 1));
-                        String path = "resources/m." + nameOfYear + numberMonth + ".csv";
-                        monthlyReports[i] = new MonthlyReport(path);
-                        System.out.println("Успешно считано. Отчет за " + Month.of(i+1));
-                    }
+                    reportService.action(command, nameOfYear);
                 } catch (java.lang.NullPointerException MonthlyReport) {
                     System.out.println("Введите календарный год в формате (YYYY)");
                     nameOfYear = scanner.next();
                 }
             } else if (command == 2) {
                 try {
-                    String path = "resources/y." + nameOfYear + ".csv";
-                    yearlyReport = new YearlyReport(path);
-                    System.out.println("Успешно считано. Отчет за " + nameOfYear + " год.");
+                    reportService.action(command, nameOfYear);
                 } catch (java.lang.NullPointerException MonthlyReport) {
                     System.out.println("Введите календарный год в формате (YYYY)");
                     nameOfYear = scanner.next();
                 }
             } else if (command == 3) {
-
-                for (int i = 0; i < monthlyReports.length; i++) {
-                    try {
-                        monthlyReports[i].collation(monthlyReports[i], yearlyReport, (i + 1));
-                    } catch (java.lang.NullPointerException Main) {
-                        i = monthlyReports.length;
-                        System.out.println("Вы еще не считали отчеты, возвращайтесь когда комманды " +
-                                "1 и 2 будут использованы");
-                    }
-                }
+                reportService.action(command, nameOfYear);
             } else if (command == 4) {
-                for (int i = 0; i < monthlyReports.length; i++) {
-                    try {
-                        monthlyReports[i].infoOfReports(monthlyReports[i], (i + 1));
-                    } catch (java.lang.NullPointerException Main) {
-                        System.out.println("Вы еще не считали отчеты, возвращайтесь когда комманды " +
-                                "1 и 2 будут использованы");
-                        i = monthlyReports.length;
-                    }
-                }
+                reportService.action(command, nameOfYear);
             } else if (command == 5) {
-                try {
-                    yearlyReport.infoOfYear(yearlyReport, nameOfYear, monthlyReports.length);
-                } catch (java.lang.NullPointerException Main) {
-                    System.out.println("Вы еще не считали отчеты, возвращайтесь когда комманды " +
-                            "1 и 2 будут использованы");
-                }
+                reportService.action(command, nameOfYear);
             } else if (command == 0) {
                 System.out.println("Работа программы завершена");
                 return;
