@@ -15,24 +15,24 @@ public class Main {
         while (true) {
             if (command == 1) {
                 try {
-                    reportService.action(command, nameOfYear);
+                    reportService.readMonthlyReport(nameOfYear);
                 } catch (java.lang.NullPointerException MonthlyReport) {
                     System.out.println("Введите календарный год в формате (YYYY)");
                     nameOfYear = scanner.next();
                 }
             } else if (command == 2) {
                 try {
-                    reportService.action(command, nameOfYear);
+                    reportService.readYearlyReport(nameOfYear);
                 } catch (java.lang.NullPointerException MonthlyReport) {
                     System.out.println("Введите календарный год в формате (YYYY)");
                     nameOfYear = scanner.next();
                 }
             } else if (command == 3) {
-                reportService.action(command, nameOfYear);
+                reportService.collationYearlyAndMonthlyReports();
             } else if (command == 4) {
-                reportService.action(command, nameOfYear);
+                reportService.showMonthlyReportsInfo();
             } else if (command == 5) {
-                reportService.action(command, nameOfYear);
+                reportService.showYearlyReportInfo(nameOfYear);
             } else if (command == 0) {
                 System.out.println("Работа программы завершена");
                 return;

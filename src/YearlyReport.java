@@ -29,11 +29,12 @@ public class YearlyReport {
         }
     }
 
-    /** Метод, отображающий краткую статистику по годовому отчету
+    /**
+     * Метод, отображающий краткую статистику по годовому отчету
      *
-     * @param reportPerYear
-     * @param nameOfYear
-     * @param monthsCount
+     * @param reportPerYear объект класса YearlyReport
+     * @param nameOfYear    номер календарного года, к примеру (2021)
+     * @param monthsCount   количество месяцев
      */
     public void infoOfYear(YearlyReport reportPerYear, String nameOfYear, int monthsCount) {
         double expensesSum = 0;

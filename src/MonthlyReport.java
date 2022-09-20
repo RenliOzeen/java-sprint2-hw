@@ -5,8 +5,8 @@ import java.time.Month;
 import java.util.HashMap;
 
 public class MonthlyReport {
-   final HashMap<String, HashMap<Integer, Double>> expenseReport;
-   final HashMap<String, HashMap<Integer, Double>> incomeReport;
+    final HashMap<String, HashMap<Integer, Double>> expenseReport;
+    final HashMap<String, HashMap<Integer, Double>> incomeReport;
 
 
     MonthlyReport() {
@@ -16,12 +16,13 @@ public class MonthlyReport {
 
     }
 
-    /**Метод для считывания строки из файла, такой же используется в классе YearlyReport
+    /**
+     * Метод для считывания строки из файла, такой же используется в классе YearlyReport
      *
-     * @param path
-     * @return
+     * @param path путь к файлу отчета формата .csv
+     * @return возвращает содержимое файла строкой
      */  //не совсем разобрался, но судя по всему javadoc отличается от обычных комментов
-         //цветом и возможностью добавлять дополнительные обозначения(имя разработчика/версию/параметры метода)
+    //цветом и возможностью добавлять дополнительные обозначения(имя разработчика/версию/параметры метода)
     public String readFileContentsOrNull(String path) {
         try {
             return Files.readString(Path.of(path));
@@ -33,11 +34,12 @@ public class MonthlyReport {
         }
     }
 
-    /** Метод, проводящий сверку месячных отчетов с годовым
+    /**
+     * Метод, проводящий сверку месячных отчетов с годовым
      *
-     * @param reportPerMonth
-     * @param reportPerYear
-     * @param i
+     * @param reportPerMonth объект класса MonthlyReport
+     * @param reportPerYear  объект класса YearlyReport
+     * @param i              номер месяца
      */
     public void collation(MonthlyReport reportPerMonth,
                           YearlyReport reportPerYear, int i) {
@@ -66,10 +68,11 @@ public class MonthlyReport {
         }
     }
 
-    /** Метод, отображающий краткую статистику по месячным отчетам
+    /**
+     * Метод, отображающий краткую статистику по месячным отчетам
      *
-     * @param reportPerMonth
-     * @param i
+     * @param reportPerMonth объект класса MonthlyReport
+     * @param i              номер месяца
      */
     public void infoOfReports(MonthlyReport reportPerMonth, int i) {
         if (!reportPerMonth.incomeReport.isEmpty()) {
@@ -103,7 +106,8 @@ public class MonthlyReport {
         }
     }
 
-    /** Метод для сохранения считанных в строку файлов отчетов в мапы,аналогичный в классе YearlyReport
+    /**
+     * Метод для сохранения считанных в строку файлов отчетов в мапы,аналогичный в классе YearlyReport
      *
      * @param file строка, полученная из метода readFileContentsOrNull
      */
